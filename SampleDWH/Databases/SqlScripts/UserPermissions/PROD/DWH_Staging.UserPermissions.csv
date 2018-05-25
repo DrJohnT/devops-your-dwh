@@ -1,0 +1,2 @@
+UserGroup,RoleName,DefaultSchemaName
+qregroup\svcSissDBreader-PROD,db_owner,dbo

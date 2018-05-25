@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DeploymentConfig>
+
+  <AppTiers>
+	<AppTier>SSDB</AppTier>
+	<AppTier>SSIS</AppTier>
+	<AppTier>SSAS</AppTier>
+	<AppTier>SSRS</AppTier>
+  </AppTiers>
+
+  <ServerRoles>
+    <Role>DWHServer</Role>
+    <Role>SSASServer</Role>
+	<Role>SSRSServer</Role>
+  </ServerRoles>
+
+  <Databases>
+	<Database ServerRole="DWHServer" name="DWH_Metadata" NeverDrop="true" />
+    <Database ServerRole="DWHServer" name="DWH_Staging"  />
+	<Database ServerRole="DWHServer" name="DWH_QuantumDM"  />
+	
+	<!-- ONLY SSAS Cube Databases should have SourceDatabase set is used to update the cube during deployment -->
+	<Database ServerRole="SSASServer" name="QuantumCube" AlwaysCreateNewDatabase="True" SourceDatabase="DWH_QuantumDM" />
+  </Databases>
+
+  <Solutions>
+    <Solution name="DWH" SolutionPath="DWH.sln">
+		<!-- order here determines the install order -->
+		<Database>DWH_Metadata</Database>
+		<Database>DWH_Staging</Database>
+		<Database>DWH_QuantumDM</Database>
+		<SSRS_Project Project="QuantumReports" Folder="QuantumDM Reports" DataSourceName="DWH_QuantumDM" DataSourceDB="DWH_QuantumDM" DataSetFolder="QuantumDM Datasets" ReportPartFolder="QuantumDM Report Parts" DataSourceFolder="Data Sources"/>
+    </Solution>
+   
+   <Solution name="QuantumCubes" SolutionPath="SSAS\QuantumCubes.sln">
+      <!-- Note that each SSAS_Tabular project should have a corresponding database entry in <Databases> above -->
+      <SSAS_Tabular Project="QuantumCube" Model="Model"/>
+    </Solution>
+	
+   <Solution name="Load_DWH" SolutionPath="SSIS\Load_DWH.sln">
+	  <SSIS_Project Project="Load_DWH" Folder="QRE_DWH" Environment="QRE" />
+    </Solution>	
+	
+  </Solutions>
+
+  <Environments>
+    <Environment name="DEVVM" >
+      <Servers>
+        <Server name="SZRH5390.qregroup.net">
+          <HostedAppTiers>
+            <AppTier>SSDB</AppTier>
+            <AppTier>SSIS</AppTier>
+            <AppTier>SSAS</AppTier>
+			<AppTier>SSRS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+            <Role>DWHServer</Role>
+            <Role>SSASServer</Role>
+			<Role>SSRSServer</Role>
+          </ServerRoles>
+        </Server>
+      </Servers>
+	  
+      <SQLCmdVariables>
+        <SqlCmdVariable Include="SSISDB">
+          <Value>SSISDB</Value>
+        </SqlCmdVariable>
+      </SQLCmdVariables>
+    </Environment>
+	
+    <Environment name="BuildServer" >
+      <Servers>
+        <Server name="SZRH3012.qregroup.net">
+          <HostedAppTiers>
+            <AppTier>SSDB</AppTier>
+            <AppTier>SSIS</AppTier>
+            <AppTier>SSAS</AppTier>
+			<AppTier>SSRS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+            <Role>DWHServer</Role>
+            <Role>SSASServer</Role>
+			<Role>SSRSServer</Role>
+          </ServerRoles>
+        </Server>
+      </Servers>
+      <SQLCmdVariables>
+        <SqlCmdVariable Include="SSISDB">
+          <Value>SSISDB</Value>
+        </SqlCmdVariable>
+      </SQLCmdVariables>
+    </Environment>	
+
+    <Environment name="DEV" >
+      <Servers>
+        <Server name="01-dev.db.qregroup.net">
+          <HostedAppTiers>
+            <AppTier>SSDB</AppTier>
+            <AppTier>SSIS</AppTier>
+			<AppTier>SSRS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+            <Role>DWHServer</Role>
+			<Role>SSRSServer</Role>
+          </ServerRoles>
+        </Server>
+		
+		<Server name="01-dev.db.qregroup.net\TABULAR">
+          <HostedAppTiers>
+			<AppTier>SSAS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+			<Role>SSASServer</Role>
+          </ServerRoles>
+        </Server>
+      </Servers>
+      <SQLCmdVariables>
+        <SqlCmdVariable Include="SSISDB">
+          <Value>SSISDB</Value>
+        </SqlCmdVariable>
+      </SQLCmdVariables>
+    </Environment>	
+	
+	<Environment name="TST" >
+      <Servers>
+        <Server name="01-tst.db.qregroup.net">
+          <HostedAppTiers>
+            <AppTier>SSDB</AppTier>
+            <AppTier>SSIS</AppTier>
+			<AppTier>SSRS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+            <Role>DWHServer</Role>
+			<Role>SSRSServer</Role>
+          </ServerRoles>
+        </Server>
+		
+		<Server name="01-tst.db.qregroup.net\TABULAR">
+          <HostedAppTiers>
+			<AppTier>SSAS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+			<Role>SSASServer</Role>
+          </ServerRoles>
+        </Server>
+      </Servers>
+      <SQLCmdVariables>
+        <SqlCmdVariable Include="SSISDB">
+          <Value>SSISDB</Value>
+        </SqlCmdVariable>
+      </SQLCmdVariables>
+    </Environment>	
+	
+	<Environment name="PREPROD" >
+      <Servers>
+        <Server name="01-pre.db.qregroup.net">
+          <HostedAppTiers>
+            <AppTier>SSDB</AppTier>
+            <AppTier>SSIS</AppTier>
+			<AppTier>SSRS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+            <Role>DWHServer</Role>
+			<Role>SSRSServer</Role>
+          </ServerRoles>
+        </Server>
+		
+		<Server name="01-pre.db.qregroup.net\TABULAR">
+          <HostedAppTiers>
+			<AppTier>SSAS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+			<Role>SSASServer</Role>
+          </ServerRoles>
+        </Server>
+      </Servers>
+      <SQLCmdVariables>
+        <SqlCmdVariable Include="SSISDB">
+          <Value>SSISDB</Value>
+        </SqlCmdVariable>
+      </SQLCmdVariables>
+    </Environment>	
+	
+	<Environment name="PROD" >
+      <Servers>
+        <Server name="01.db.qregroup.net">
+          <HostedAppTiers>
+            <AppTier>SSDB</AppTier>
+            <AppTier>SSIS</AppTier>
+			<AppTier>SSRS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+            <Role>DWHServer</Role>
+			<Role>SSRSServer</Role>
+          </ServerRoles>
+        </Server>
+		
+		<Server name="01.db.qregroup.net\TABULAR">
+          <HostedAppTiers>
+			<AppTier>SSAS</AppTier>
+          </HostedAppTiers>
+          <ServerRoles>
+			<Role>SSASServer</Role>
+          </ServerRoles>
+        </Server>
+      </Servers>
+      <SQLCmdVariables>
+        <SqlCmdVariable Include="SSISDB">
+          <Value>SSISDB</Value>
+        </SqlCmdVariable>
+      </SQLCmdVariables>
+    </Environment>	
+
+  </Environments>
+
+</DeploymentConfig>

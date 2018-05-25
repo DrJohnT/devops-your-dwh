@@ -1,0 +1,7 @@
+UserGroup,RoleName,DefaultSchemaName
+qregroup\GS_Online Report Users Finance,RoleDataMartSchema,qDataMart
+qregroup\GS_All_Online Reports_Risk Actuarial,RoleDataMartSchema,qDataMart
+qregroup\Online Report Users Underwriting,RoleDataMartSchema,qDataMart
+qregroup\GS_Team_All Underwriting,RoleDataMartSchema,qDataMart
+qregroup\Online Report Users Claims,RoleDataMartSchema,qDataMart
+qregroup\GS_All_QRE_Quantum_Users,RoleDataMartSchema,qDataMart
