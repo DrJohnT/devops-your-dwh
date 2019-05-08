@@ -1,5 +1,0 @@
-UserGroup,RoleName,DefaultSchemaName
-qregroup\svcSissDBreader-PROD,db_owner,dbo
-qregroup\svcPowerBi-PROD,RoleDataMartSchema,qDataMart
-qregroup\GS_All QIC Audit Users,RoleDataMartSchema,qDataMart
-qregroup\qresvczrhsqlprod,RoleCubeViews,qCube

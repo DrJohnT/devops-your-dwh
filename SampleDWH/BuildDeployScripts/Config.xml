@@ -18,7 +18,7 @@
 	<Database ServerRole="DWHServer" name="DWH_Metadata" NeverDrop="true" />
     <Database ServerRole="DWHServer" name="DWH_Staging"  />
 	<Database ServerRole="DWHServer" name="DWH_QuantumDM"  />
-	
+
 	<!-- ONLY SSAS Cube Databases should have SourceDatabase set is used to update the cube during deployment -->
 	<Database ServerRole="SSASServer" name="QuantumCube" AlwaysCreateNewDatabase="True" SourceDatabase="DWH_QuantumDM" />
   </Databases>
@@ -31,22 +31,23 @@
 		<Database>DWH_QuantumDM</Database>
 		<SSRS_Project Project="QuantumReports" Folder="QuantumDM Reports" DataSourceName="DWH_QuantumDM" DataSourceDB="DWH_QuantumDM" DataSetFolder="QuantumDM Datasets" ReportPartFolder="QuantumDM Report Parts" DataSourceFolder="Data Sources"/>
     </Solution>
-   
+
    <Solution name="QuantumCubes" SolutionPath="SSAS\QuantumCubes.sln">
       <!-- Note that each SSAS_Tabular project should have a corresponding database entry in <Databases> above -->
       <SSAS_Tabular Project="QuantumCube" Model="Model"/>
     </Solution>
-	
+
    <Solution name="Load_DWH" SolutionPath="SSIS\Load_DWH.sln">
 	  <SSIS_Project Project="Load_DWH" Folder="QRE_DWH" Environment="QRE" />
-    </Solution>	
-	
+    </Solution>
+
   </Solutions>
 
   <Environments>
-    <Environment name="DEVVM" >
+
+    <Environment name="BuildServer" >
       <Servers>
-        <Server name="SZRH5390.qregroup.net">
+        <Server name="build02">
           <HostedAppTiers>
             <AppTier>SSDB</AppTier>
             <AppTier>SSIS</AppTier>
@@ -60,40 +61,16 @@
           </ServerRoles>
         </Server>
       </Servers>
-	  
       <SQLCmdVariables>
         <SqlCmdVariable Include="SSISDB">
           <Value>SSISDB</Value>
         </SqlCmdVariable>
       </SQLCmdVariables>
     </Environment>
-	
-    <Environment name="BuildServer" >
-      <Servers>
-        <Server name="SZRH3012.qregroup.net">
-          <HostedAppTiers>
-            <AppTier>SSDB</AppTier>
-            <AppTier>SSIS</AppTier>
-            <AppTier>SSAS</AppTier>
-			<AppTier>SSRS</AppTier>
-          </HostedAppTiers>
-          <ServerRoles>
-            <Role>DWHServer</Role>
-            <Role>SSASServer</Role>
-			<Role>SSRSServer</Role>
-          </ServerRoles>
-        </Server>
-      </Servers>
-      <SQLCmdVariables>
-        <SqlCmdVariable Include="SSISDB">
-          <Value>SSISDB</Value>
-        </SqlCmdVariable>
-      </SQLCmdVariables>
-    </Environment>	
 
     <Environment name="DEV" >
       <Servers>
-        <Server name="01-dev.db.qregroup.net">
+        <Server name="01-dev.db.XXX.net">
           <HostedAppTiers>
             <AppTier>SSDB</AppTier>
             <AppTier>SSIS</AppTier>
@@ -104,8 +81,8 @@
 			<Role>SSRSServer</Role>
           </ServerRoles>
         </Server>
-		
-		<Server name="01-dev.db.qregroup.net\TABULAR">
+
+		<Server name="01-dev.db.XXX.net\TABULAR">
           <HostedAppTiers>
 			<AppTier>SSAS</AppTier>
           </HostedAppTiers>
@@ -119,11 +96,11 @@
           <Value>SSISDB</Value>
         </SqlCmdVariable>
       </SQLCmdVariables>
-    </Environment>	
-	
+    </Environment>
+
 	<Environment name="TST" >
       <Servers>
-        <Server name="01-tst.db.qregroup.net">
+        <Server name="01-tst.db.XXX.net">
           <HostedAppTiers>
             <AppTier>SSDB</AppTier>
             <AppTier>SSIS</AppTier>
@@ -134,8 +111,8 @@
 			<Role>SSRSServer</Role>
           </ServerRoles>
         </Server>
-		
-		<Server name="01-tst.db.qregroup.net\TABULAR">
+
+		<Server name="01-tst.db.XXX.net\TABULAR">
           <HostedAppTiers>
 			<AppTier>SSAS</AppTier>
           </HostedAppTiers>
@@ -149,11 +126,11 @@
           <Value>SSISDB</Value>
         </SqlCmdVariable>
       </SQLCmdVariables>
-    </Environment>	
-	
+    </Environment>
+
 	<Environment name="PREPROD" >
       <Servers>
-        <Server name="01-pre.db.qregroup.net">
+        <Server name="01-pre.db.XXX.net">
           <HostedAppTiers>
             <AppTier>SSDB</AppTier>
             <AppTier>SSIS</AppTier>
@@ -164,8 +141,8 @@
 			<Role>SSRSServer</Role>
           </ServerRoles>
         </Server>
-		
-		<Server name="01-pre.db.qregroup.net\TABULAR">
+
+		<Server name="01-pre.db.XXX.net\TABULAR">
           <HostedAppTiers>
 			<AppTier>SSAS</AppTier>
           </HostedAppTiers>
@@ -179,11 +156,11 @@
           <Value>SSISDB</Value>
         </SqlCmdVariable>
       </SQLCmdVariables>
-    </Environment>	
-	
+    </Environment>
+
 	<Environment name="PROD" >
       <Servers>
-        <Server name="01.db.qregroup.net">
+        <Server name="01.db.XXX.net">
           <HostedAppTiers>
             <AppTier>SSDB</AppTier>
             <AppTier>SSIS</AppTier>
@@ -194,8 +171,8 @@
 			<Role>SSRSServer</Role>
           </ServerRoles>
         </Server>
-		
-		<Server name="01.db.qregroup.net\TABULAR">
+
+		<Server name="01.db.XXX.net\TABULAR">
           <HostedAppTiers>
 			<AppTier>SSAS</AppTier>
           </HostedAppTiers>
@@ -209,7 +186,7 @@
           <Value>SSISDB</Value>
         </SqlCmdVariable>
       </SQLCmdVariables>
-    </Environment>	
+    </Environment>
 
   </Environments>
 

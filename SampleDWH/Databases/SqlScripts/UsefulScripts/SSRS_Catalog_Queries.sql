@@ -16,13 +16,12 @@ SELECT * from dbo.[DataSets]
 SELECT * FROM dbo.[DataSource]
 SELECT * FROM dbo.[Users]
 
--- Columns described on http://www.sqlgirl.com/blog/2012/09/20/report-server-executionlog-ssrs/	
+-- Columns described on http://www.sqlgirl.com/blog/2012/09/20/report-server-executionlog-ssrs/
 -- See https://docs.microsoft.com/en-us/sql/reporting-services/report-server/report-server-executionlog-and-the-executionlog3-view
-SELECT top 10000 * FROM dbo.ExecutionLog3 order by  TimeStart DESC  
+SELECT top 10000 * FROM dbo.ExecutionLog3 order by  TimeStart DESC
 
 SELECT top 10000 * FROM dbo.ExecutionLog3 where RequestType = 'Interactive'
-and UserName not in ('QREGROUP\jtunnicliffe', 'QREGROUP\bmcadam', 'QREGROUP\abrowne','QREGROUP\mcarozzi','QREGROUP\asattar')
- order by  TimeStart DESC  
+ order by  TimeStart DESC
 
 select
             C.[Name]                                                                             as ReportName,
@@ -36,9 +35,6 @@ from        dbo.ExecutionLog E
       on    E.ReportID = C.ItemID
 where
             RequestType = 0 -- 'Report Launch'
-            and UserName not in ('QREGROUP\jtunnicliffe', 'QREGROUP\bmcadam', 'QREGROUP\abrowne', 'QREGROUP\mcarozzi',
-                                 'QREGROUP\asattar'
-                                )
             and E.TimeStart > DATEADD(month, -6, GETDATE())
 group by
             C.[Name],
@@ -59,9 +55,6 @@ from        dbo.ExecutionLog E
       on    E.ReportID = C.ItemID
 where
             RequestType = 0 -- 'Report Launch'
-            and UserName not in ('QREGROUP\jtunnicliffe', 'QREGROUP\bmcadam', 'QREGROUP\abrowne', 'QREGROUP\mcarozzi',
-                                 'QREGROUP\asattar'
-                                )
             and E.TimeStart > DATEADD(month, -6, GETDATE())
 group by
             C.[Name],

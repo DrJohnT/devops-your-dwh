@@ -28,9 +28,7 @@ end;
 declare @principal_id int;
 declare @object_id bigint;
 
-declare @serviceAccount sysname = N'QREGROUP\svcSissDBreader-PROD';
-if (N'$(EnvironmentGroup)' = N'PREPROD')
-	select @serviceAccount = N'QREGROUP\svcSissDBreader-PREP';
+declare @serviceAccount sysname = N'cdxasd\dsadas-PROD';
 
 select
         @principal_id = principal_id
@@ -45,19 +43,19 @@ where   [name] = @folder_name;
 if (@principal_id is not null and   @object_id is not null)
 begin
     exec SSISDB.[catalog].grant_permission
-        @object_type = 1,       -- 1=folder 
+        @object_type = 1,       -- 1=folder
         @object_id = @object_id,
         @principal_id = @principal_id,
         @permission_type = 1;   -- 1=Read
 
     exec SSISDB.[catalog].grant_permission
-        @object_type = 1,       -- 1=folder 
+        @object_type = 1,       -- 1=folder
         @object_id = @object_id,
         @principal_id = @principal_id,
         @permission_type = 101; -- 101=Read Objects
 
     exec SSISDB.[catalog].grant_permission
-        @object_type = 1,       -- 1=folder 
+        @object_type = 1,       -- 1=folder
         @object_id = @object_id,
         @principal_id = @principal_id,
         @permission_type = 103; -- 103=Execute Objects
